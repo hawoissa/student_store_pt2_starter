@@ -23,6 +23,7 @@ app.use((req, res, next) => {
   return next(new NotFoundError())
 })
 
+
 /** Generic error handler; anything unhandled goes here. */
 app.use((err, req, res, next) => {
   const status = err.status || 500
