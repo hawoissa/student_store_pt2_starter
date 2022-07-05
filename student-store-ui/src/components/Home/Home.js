@@ -11,6 +11,8 @@ import "./Home.css"
 
 export default function Home({
   user,
+  handleLogout,
+  isLoggedIn,
   isFetching,
   products,
   activeCategory,
@@ -34,7 +36,7 @@ export default function Home({
 
   return (
     <div className="Home">
-      <Navbar />
+      <Navbar user={user} handleLogout={handleLogout} isLoggedIn={isLoggedIn}/>
       <SubNavbar
         user={user}
         activeCategory={activeCategory}

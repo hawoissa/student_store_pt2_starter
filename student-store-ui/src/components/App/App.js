@@ -7,6 +7,7 @@ import Login from "../Login/Login"
 import Orders from "../Orders/Orders"
 import NotFound from "../NotFound/NotFound"
 import ShoppingCart from "../ShoppingCart/ShoppingCart"
+import apiClient from "../../services/apiClient"
 import { removeFromCart, addToCart, getQuantityOfItemInCart, getTotalItemsInCart } from "../../utils/cart"
 import "./App.css"
 
@@ -18,6 +19,7 @@ export default function App() {
   const [orders, setOrders] = useState([])
   const [cart, setCart] = useState({})
   const [isFetching, setIsFetching] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isCheckingOut, setIsCheckingOut] = useState(false)
   const [error, setError] = useState(null)
 
@@ -73,7 +75,30 @@ export default function App() {
     }
 
     fetchProducts()
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    const fetchAuthedUser = async () => {
+      const { data } = await apiClient.fetchUserFromToken()
+      if (data) {
+        setUser(data.user)
+        setIsLoggedIn(true)
+      }
+    }
+    const token = localStorage.getItem("student_store_token")
+    if (token) {
+      apiClient.setToken(token);
+      fetchAuthedUser();
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    await apiClient.logoutUser();
+    setUser({});
+    setOrders([]);
+    setIsLoggedIn(false);
+    setError(null);
+  }
 
   return (
     <div className="App">
@@ -83,6 +108,7 @@ export default function App() {
             path="/"
             element={
               <Home
+                handleLogout = {handleLogout} isLoggedIn={isLoggedIn}
                 user={user}
                 error={error}
                 products={products}

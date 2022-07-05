@@ -45,3 +45,15 @@
   flex: 1;
   max-width: 650px;
 }
+
+.Navbar .content .links .button {
+    width: 80px;
+    height: 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bright-green);
+    border: none;
+    cursor: pointer;
+}

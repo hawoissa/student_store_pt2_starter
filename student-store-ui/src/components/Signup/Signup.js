@@ -9,6 +9,7 @@ export default function Signup({ user, setUser }) {
   const [errors, setErrors] = useState({})
   const [form, setForm] = useState({
     name: "",
+    username: "",
     email: "",
     password: "",
     passwordConfirm: "",
@@ -57,6 +58,7 @@ export default function Signup({ user, setUser }) {
     try {
       const res = await axios.post("http://localhost:3001/auth/register", {
         name: form.name,
+        username: form.username,
         email: form.email,
         password: form.password,
       })
@@ -93,6 +95,18 @@ export default function Signup({ user, setUser }) {
               onChange={handleOnInputChange}
             />
             {errors.name && <span className="error">{errors.name}</span>}
+          </div>
+
+          <div className="input-field">
+            <label htmlFor="username">User Name</label>
+            <input
+              type="text"
+              name="username"
+              placeholder="Enter your username"
+              value={form.username}
+              onChange={handleOnInputChange}
+            />
+            {errors.username && <span className="error">{errors.username}</span>}
           </div>
 
           <div className="input-field">

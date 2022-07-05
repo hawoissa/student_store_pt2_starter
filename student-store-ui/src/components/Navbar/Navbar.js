@@ -5,7 +5,8 @@ import Instagram from "../Icons/Instagram"
 import Facebook from "../Icons/Facebook"
 import "./Navbar.css"
 
-export default function Navbar() {
+export default function Navbar({ user, handleLogout, isLoggedIn }) {
+  
   return (
     <nav className="Navbar">
       <div className="content">
@@ -34,6 +35,11 @@ export default function Navbar() {
           <li>
             <Link to="/#Buy">Buy Now</Link>
           </li>
+          { isLoggedIn ? 
+          <li className="button" onClick={handleLogout}>
+            Log Out
+          </li> : ""
+          }
         </ul>
       </div>
     </nav>

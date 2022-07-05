@@ -8,6 +8,7 @@ class User {
     return {
       id: user.id,
       email: user.email,
+      name: user.name,
       username: user.username,
       isAdmin: user.is_admin,
       createdAt: user.created_at,
@@ -34,7 +35,7 @@ class User {
   }
 
   static async register(credentials) {
-    const requiredFields = ["email", "password", "username", "isAdmin"]
+    const requiredFields = ["name", "email", "password", "username", "isAdmin"]
     requiredFields.forEach((property) => {
       if (!credentials.hasOwnProperty(property)) {
         throw new BadRequestError(`Missing ${property} in request body.`)
@@ -59,11 +60,11 @@ class User {
     const normalizedEmail = credentials.email.toLowerCase()
 
     const userResult = await db.query(
-      `INSERT INTO users (email, password, username, is_admin)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id, email, username, is_admin, created_at;
+      `INSERT INTO users (name, email, password, username, is_admin)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, name, email, username, is_admin, created_at;
       `,
-      [normalizedEmail, hashedPassword, credentials.username, credentials.isAdmin]
+      [credentials.name, normalizedEmail, hashedPassword, credentials.username, credentials.isAdmin]
     )
     const user = userResult.rows[0]
 
@@ -88,13 +89,9 @@ class User {
     if (!username) {
       throw new BadRequestError("No username provided")
     }
-
     const query = `SELECT * FROM users WHERE username = $1`
-
     const result = await db.query(query, [username])
-
     const user = result.rows[0]
-
     return user
   }
 }

@@ -1,9 +1,8 @@
 const db = require("../db")
-const { BadRequestError, UnauthorizedError } = require("../utils/errors")
 
 class Store {
    static async listProducts() {
-      const results = db.query (
+      const results = await db.query (
          `
          SELECT *     
          FROM products AS p
